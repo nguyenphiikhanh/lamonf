@@ -15,6 +15,11 @@ RUN echo "extension=mongodb.so" >> /usr/local/etc/php/conf.d/mongodb.ini
 # Install PHP Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Install Nodejs
+RUN curl -s https://deb.nodesource.com/setup_16.x | bash
+RUN apt install nodejs -y
+
+WORKDIR /var/www/html
 # Copy existing application directory
 COPY . .
 
