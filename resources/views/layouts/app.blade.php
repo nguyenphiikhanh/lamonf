@@ -6,31 +6,43 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link rel="icon" type="image/x-icon" href="favicon.png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" media="screen" href="{{asset('minimals/assets/css/perfect-scrollbar.min.css')}}" />
+        <link rel="stylesheet" type="text/css" media="screen" href="{{asset('minimals/assets/css/style.css')}}" />
+        <link defer rel="stylesheet" type="text/css" media="screen" href="assets/css/animate.css')}}'" />
+        <script src="{{asset('minimals/assets/js/perfect-scrollbar.min.js')}}"></script>
+        <script defer src="{{asset('minimals/assets/js/popper.min.js')}}"></script>
+        <script defer src="{{asset('minimals/assets/js/tippy-bundle.umd.min.js')}}"></script>
+        <script defer src="{{asset('minimals/assets/js/sweetalert.min.js')}}"></script>
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+    <body x-data="main"
+          class="relative overflow-x-hidden font-nunito text-sm font-normal antialiased"
+          :class="[ $store.app.sidebar ? 'toggle-sidebar' : '', $store.app.theme, $store.app.menu, $store.app.layout,$store.app.rtlClass]">
+    <!-- sidebar menu overlay -->
+    <div x-cloak class="fixed inset-0 z-50 bg-[black]/60 lg:hidden" :class="{'hidden' : !$store.app.sidebar}" @click="$store.app.toggleSidebar()"></div>
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+    <x-screen-loader/>
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+    <x-scroll-to-top/>
+
+    <x-customize/>
+
+    <div class="main-container min-h-screen text-black dark:text-white-dark" :class="[$store.app.navbar]">
+        @include('common.admin.sidebar')
+
+        <div class="main-content">
+            @include('common.admin.header')
+
+            <div class="animate__animated p-6" :class="[$store.app.animation]">
+                {{$slot}}
+            @include('common.admin.footer')
+            </div>
         </div>
+    </div>
+
+    @include('common.admin.script')
     </body>
 </html>
